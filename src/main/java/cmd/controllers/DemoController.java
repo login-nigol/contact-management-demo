@@ -27,9 +27,15 @@ public class DemoController {
     // аннотирован как @RequestMapping("/demo").
     public ResponseEntity<String> postItemWithValue(@RequestBody String data) { // @RequestBody указывает, что метод
         // ожидает получить данные из тела запроса. Эти данные будут автоматически преобразованы в строку и переданы в параметр data.
-        String response = String.format("postItem получил данные: %s!", data); // возвращает отформатированную строку
+        String response = String.format("postItemWithValue получил данные: %s!", data); // возвращает отформатированную строку
         return ResponseEntity.ok(response); // возвращает HTTP ответ с кодом 200 (OK) и телом, содержащим строку
         // postItemWithValue получил данные: {data}, где {data} — это данные, полученные из запроса.
+    }
+
+    @PostMapping
+    public ResponseEntity<String> postItem(@RequestBody String data) {
+        String response = String.format("postItem получил данные: %s!", data);
+        return ResponseEntity.ok(response);
     }
 
     // @RestController
