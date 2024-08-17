@@ -37,6 +37,7 @@ public class DemoController {
         String response = String.format("postItem получил данные: %s!", data);
         return ResponseEntity.ok(response);
     }
+}
 
     // @RestController
     //Эта аннотация используется для обозначения класса как контроллера, который обрабатывает HTTP-запросы и возвращает
@@ -95,4 +96,4 @@ public class DemoController {
 //        responseAPI.statusMessage = requestBodyClient.data.toUpperCase();
 //        return ResponseEntity.ok(responseAPI);
 //    }
-}
+
