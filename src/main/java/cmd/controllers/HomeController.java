@@ -4,12 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HomeController {
+public class HomeController { // В этом классе содержится логика обработки запросов, поступающих на сервер.
     @GetMapping("/")
     public String home() {
         return "start.html";
     }
 }
+
+
 
 // @Controller
 //Эта аннотация сообщает Spring, что этот класс будет контроллером. Spring автоматически обнаруживает классы,
