@@ -1,4 +1,4 @@
-# contact-management-demo
+# Contact Management - demo - String Book.
 
 ### Приложение для управления контактами
 
