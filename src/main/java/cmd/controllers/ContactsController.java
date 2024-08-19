@@ -1,7 +1,6 @@
 package cmd.controllers;
 
 import java.util.UUID;
-
 import cmd.model.Contacts;
 import cmd.service.ContactService;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +14,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RequestMapping("/contacts") // базовый URL для всех методов
 
 public class ContactsController {
+    @Autowired // Используется для автоматического внедрения зависимостей в поля, методы или конструкторы.
+                    // Spring Framework автоматически находит и внедряет подходящий бин в отмеченное место.
+    private ContactService contactService; // определяем как приватное
 
-    private final ContactService contactsService;
-
-    public ContactsController(ContactService contactService) {
-        this.contactsService = contactService;
+    @Autowired
+    public void setContactService(ContactService contactService) {
+        this.contactService = contactService;
     }
 
     @GetMapping(value = "/")
-    public ResponseEntity<Contacts> getRandomContact(){
-        Contacts contact = contactsService.getContact();
+    public ResponseEntity<Contacts> getRandomContact() {
+        Contacts contact = contactService.getContact();
         return ResponseEntity.ok(contact);
     }
 }
+
+//Конструкторное внедрение: Рекомендуемый способ, так как он позволяет создавать неизменяемые объекты и
+// делает зависимости явными.
+//Внедрение через поле: Удобный способ, но не рекомендуется, так как делает тестирование сложнее и зависимости
+// менее явными.
+//Внедрение через метод: Позволяет выполнять дополнительную логику при установке зависимости, но также делает
+// зависимости менее явными.
+
+//    private final ContactService contactService;
+//
+//    public ContactsController(ContactService contactService) { // Это пример конструкторного внедрения зависимостей.
+//    Spring автоматически передает экземпляр ContactService в этот конструктор, когда создает бин ContactController.
+//    Это возможно благодаря тому, что ContactService был зарегистрирован как бин через аннотацию @Service.
+//        this.contactService = contactService;
+//    }
+//
+//    @GetMapping(value = "/")
+//    public ResponseEntity<Contacts> getRandomContact(){
+//        Contacts contact = contactService.getContact();
+//        return ResponseEntity.ok(contact);
+//    }
+//}
 
 //    @GetMapping(value = "/oleg") // будет обрабатывать GET-запросы по пути "/contacts/oleg".
 //

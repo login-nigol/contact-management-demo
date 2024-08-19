@@ -5,7 +5,7 @@ import cmd.model.Contacts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service // обозначения класса как сервисного
 public class ContactService {
 
     public Contacts getContact() { // ручка
