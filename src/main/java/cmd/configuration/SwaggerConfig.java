@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-public class SwaggerConfig {
+public class SwaggerConfig { // Swagger UI будет доступен по адресу http://localhost:8080/swagger-ui/index.html
 
     @Bean
     public OpenAPI api() {

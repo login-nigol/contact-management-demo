@@ -1,34 +1,98 @@
 package cmd.controllers;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
 import cmd.model.Contacts;
 import cmd.service.ContactService;
+import io.swagger.v3.oas.annotations.info.Contact;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@RestController // указывает что это контроллер
-@RequestMapping("/contacts") // базовый URL для всех методов
-
+@RestController
+@RequestMapping("/api/contacts")
 public class ContactsController {
-    @Autowired // Используется для автоматического внедрения зависимостей в поля, методы или конструкторы.
-                    // Spring Framework автоматически находит и внедряет подходящий бин в отмеченное место.
-    private ContactService contactService; // определяем как приватное
 
     @Autowired
-    public void setContactService(ContactService contactService) {
-        this.contactService = contactService;
+    private ContactService contactService;
+
+    @GetMapping
+    public List<Contacts> getAllContacts() {
+        return contactService.getAllContacts();
     }
 
-    @GetMapping(value = "/")
-    public ResponseEntity<Contacts> getRandomContact() {
-        Contacts contact = contactService.getContact();
-        return ResponseEntity.ok(contact);
+    @GetMapping("/{id}")
+    public ResponseEntity<Contacts> getContactById(@PathVariable Long id) {
+        Optional<Contacts> contact = contactService.getContactById(id);
+        return contact.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Contacts> createContact(@RequestBody Contacts contact) {
+        Contacts savedContact = contactService.saveContact(contact);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Contacts> updateContact(@PathVariable Long id, @RequestBody Contacts contact) {
+        try {
+            Contacts updatedContact = contactService.updateContact(id, contact);
+            return ResponseEntity.ok(updatedContact);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
+        try {
+            contactService.deleteContact(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
+
+//@RestController // указывает что это контроллер
+//@RequestMapping("/contacts") // базовый URL для всех методов
+//public class ContactsController {
+//
+//    @Autowired // внедрения зависимостей в поля, методы или конструкторы.
+//    private ContactService contactService; // определяем как приватное
+//
+//    @GetMapping(value = "/")
+//    public List<Contacts> getAllContacts() {
+//        return contactService.getAllContact();
+//    }
+//
+//}
+
+
+//@RestController // указывает что это контроллер
+//@RequestMapping("/contacts") // базовый URL для всех методов
+//
+//public class ContactsController {
+//
+//    @Autowired // Используется для автоматического внедрения зависимостей в поля, методы или конструкторы.
+//                    // Spring Framework автоматически находит и внедряет подходящий бин в отмеченное место.
+//    private ContactService contactService; // определяем как приватное
+//
+//    @Autowired
+//    public void setContactService(ContactService contactService) {
+//        this.contactService = contactService;
+//    }
+//
+//    @GetMapping(value = "/")
+//    public ResponseEntity<Contacts> getRandomContact() {
+//        Contacts contact = contactService.getContact();
+//        return ResponseEntity.ok(contact);
+//    }
+//}
 
 //Конструкторное внедрение: Рекомендуемый способ, так как он позволяет создавать неизменяемые объекты и
 // делает зависимости явными.

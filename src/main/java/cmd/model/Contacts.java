@@ -20,5 +20,6 @@ public class Contacts {
 
     private UUID id;
     private String name;
+//    private String phoneNumber;
     private String email;
 }
